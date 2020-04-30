@@ -4,20 +4,20 @@ public class Peao extends Peca{
 		super(tipo, cor);
 	}
 	
-	public boolean podeMover (int xInicial, int xFinal, int yInicial, int yFinal, Tabuleiro t) {
+	public boolean podeMover (int xInicial, int xFinal, int yInicial, int yFinal, Peca[][] t) {
 		boolean b = super.podeMover(xInicial, xFinal, yInicial, yFinal, t);
 		if (b) {
-			if (xInicial == xFinal) {
-				if (t.tabuleiro[xInicial][yInicial].cor == 'b') {
-					if (yFinal - yInicial == 1)
+			if (yInicial == yFinal) {
+				if (t[xInicial][yInicial].cor == 'b') {
+					if (xFinal - xInicial == 1)
 						return true;
-					if (yFinal - yInicial == 2 && yFinal == 3 && t.tabuleiro[xInicial][yInicial + 1].cor == '-')
+					if (xFinal - xInicial == 2 && xFinal == 3 && t[xInicial + 1][yInicial].cor == '-')
 						return true;
 				}
-				else if (t.tabuleiro[xFinal][yFinal].cor == 'p') {
-					if (yInicial - yFinal == 1)
+				else if (t[xInicial][yInicial].cor == 'p') {
+					if (xInicial - xFinal == 1)
 						return true;
-					if (yInicial - yFinal == 2 && yFinal == 4 && t.tabuleiro[xInicial][yInicial-1].cor == '-')
+					if (xInicial - xFinal == 2 && xFinal == 4 && t[xInicial - 1][yInicial].cor == '-')
 						return true;
 				}
 			}
@@ -25,29 +25,29 @@ public class Peao extends Peca{
 		return false;
 	}
 	
-	public boolean temCaptura (int xInicial, int xFinal, int yInicial, int yFinal, Tabuleiro t) {
+	public boolean temCaptura (int xInicial, int xFinal, int yInicial, int yFinal, Peca[][] t) {
 		boolean b = super.temCaptura(xInicial, xFinal, yInicial, yFinal, t);
 		if (b) {
-			if (t.tabuleiro[xInicial][yInicial].cor == 'b') {
-				if (yFinal - yInicial == 2) {
-					if (xFinal - xInicial == 2) {
-						if (t.tabuleiro[xInicial + 1][yInicial + 1].cor == 'p')
+			if (t[xInicial][yInicial].cor == 'b') {
+				if (yFinal - yInicial == 1) {
+					if (xFinal - xInicial == 1) {
+						if (t[xInicial + 1][yInicial + 1].cor == 'p')
 							return true;
 					}
-					else if (xFinal - xInicial == -2) {
-						if (t.tabuleiro[xInicial - 1][yInicial + 1].cor == 'p')
+					else if (xFinal - xInicial == -1) {
+						if (t[xInicial - 1][yInicial + 1].cor == 'p')
 							return true;
 					}
 				}
 			}
-			else if (t.tabuleiro[xInicial][yInicial].cor == 'p') {
-				if (yInicial - yFinal == 2) {
-					if (xFinal - xInicial == 2) {
-						if (t.tabuleiro[xInicial + 1][yInicial - 1].cor == 'b')
+			else if (t[xInicial][yInicial].cor == 'p') {
+				if (yInicial - yFinal == 1) {
+					if (xFinal - xInicial == 1) {
+						if (t[xInicial + 1][yInicial - 1].cor == 'b')
 							return true;
 					}
-					else if (xFinal - xInicial == -2) {
-						if (t.tabuleiro[xInicial-1][yInicial - 1].cor == 'b')
+					else if (xFinal - xInicial == -1) {
+						if (t[xInicial-1][yInicial - 1].cor == 'b')
 							return true;
 					}
 				}
