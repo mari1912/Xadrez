@@ -10,7 +10,7 @@ public class Peca {
 	
 	public boolean podeMover (int xInicial, int xFinal, int yInicial, int yFinal, Peca[][] t) {
 		
-		//a peca esta dentro dos limites do tabuleiro
+		//a posicao final e inicial esta dentro dos limites do tabuleiro
 		if (xInicial > 7 || xInicial < 0)
 			return false;
 		if (xFinal > 7 || xFinal < 0)

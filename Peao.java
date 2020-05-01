@@ -28,28 +28,17 @@ public class Peao extends Peca{
 	public boolean temCaptura (int xInicial, int xFinal, int yInicial, int yFinal, Peca[][] t) {
 		boolean b = super.temCaptura(xInicial, xFinal, yInicial, yFinal, t);
 		if (b) {
+			//tem que andar pra frente sempre
 			if (t[xInicial][yInicial].cor == 'b') {
-				if (yFinal - yInicial == 1) {
-					if (xFinal - xInicial == 1) {
-						if (t[xInicial + 1][yInicial + 1].cor == 'p')
-							return true;
-					}
-					else if (xFinal - xInicial == -1) {
-						if (t[xInicial - 1][yInicial + 1].cor == 'p')
-							return true;
-					}
+				if (xFinal - xInicial == 1) {
+					if (yFinal - yInicial == 1 || yFinal - yInicial == -1)
+						return true;
 				}
 			}
 			else if (t[xInicial][yInicial].cor == 'p') {
-				if (yInicial - yFinal == 1) {
-					if (xFinal - xInicial == 1) {
-						if (t[xInicial + 1][yInicial - 1].cor == 'b')
-							return true;
-					}
-					else if (xFinal - xInicial == -1) {
-						if (t[xInicial-1][yInicial - 1].cor == 'b')
-							return true;
-					}
+				if (xFinal - xInicial == -1) {
+					if (yFinal - yInicial == 1 || yFinal - yInicial == -1)
+						return true;
 				}
 			}
 		}

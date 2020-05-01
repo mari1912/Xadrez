@@ -2,12 +2,13 @@ public class Tabuleiro {
 	
 	protected Peca[][] tabuleiro;
 	protected char vez; //branco ou preto
+	protected int reis; 
 	
 	Tabuleiro () {
 		
 		tabuleiro = new Peca [8][8];
 		vez = 'b'; //comeca com os brancos
-		//precisa ver se o rei dos dois ainda esta em jogo
+		reis = 2;
 		
 		for (int i = 7; i >= 0; i--) {
 			for (int j = 7; j >= 0; j--) {
@@ -97,10 +98,6 @@ public class Tabuleiro {
 		System.out.println("\ta\tb\tc\td\te\tf\tg\th");
 	}
 	
-	public void vezDeQuem () {
-		;
-	}
-	
 	public void realizaMovimento (int xInicial, int xFinal, int yInicial, int yFinal) {
 		boolean p = tabuleiro[xInicial][yInicial].podeMover(xInicial, xFinal, yInicial, yFinal, tabuleiro);
 		if (p) {
@@ -121,6 +118,8 @@ public class Tabuleiro {
 		else {
 			p = tabuleiro[xInicial][yInicial].temCaptura(xInicial, xFinal, yInicial, yFinal, tabuleiro);
 			if (p) {
+				if (tabuleiro[xFinal][yFinal].tipo == "rei") //se um rei for eliminado
+					reis--;
 				if (tabuleiro[xInicial][yInicial].tipo == "peao")
 					tabuleiro[xFinal][yFinal] = new Peao ("peao", tabuleiro[xInicial][yInicial].cor);
 				else if (tabuleiro[xInicial][yInicial].tipo == "bispo")
@@ -138,15 +137,14 @@ public class Tabuleiro {
 		}
 	}
 	
-	public void realizaCaptura (int xInicial, int xFinal, int yInicial, int yFinal) {
-		;
+	public boolean temJogo () {
+		if (reis == 2)
+			return true;
+		else
+			return false;
 	}
 	
-	public void temJogo () {
-		;
-	}
-	
-	void mover (char[] pos) {
+	public void mover (char[] pos) {
 		int xInicial = pos[0] - '1';
 		int yInicial = pos[1] - 'a';
 		int xFinal = pos[3] - '1';

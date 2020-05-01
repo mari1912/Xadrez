@@ -24,6 +24,10 @@ public class Main {
 			System.out.printf("Source: %c%c\n", pos[0], pos[1]);
 			System.out.printf("Target: %c%c\n", pos[3], pos[4]);
 			tabuleiro.imprime();
+			if (!tabuleiro.temJogo()) {
+				System.out.println("Fim de jogo");
+				break;
+			}
 		}
 	}
 }
