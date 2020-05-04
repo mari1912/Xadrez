@@ -2,6 +2,12 @@ public class Main {
 
 	public static void main (String[] args) {
 		
+		//variavel pra ver se o movimento realizado foi valido;
+		boolean passaAVez;
+
+		//variavel pra ver o turno;
+		int turno = 1; // turno impar = vez das brancas; turno par = vez das pretas
+		
 		//array com os caracteres indicando a posicao das pecas que serao movidas
 		char[] pos = new char[10];
 
@@ -19,11 +25,14 @@ public class Main {
 		
 		//Fazer os movimentos
 		for (int i=0;i<commands.length;i++) {
-			commands[i].getChars(0,5,pos,0);
-			tabuleiro.mover(pos);
-			System.out.printf("Source: %c%c\n", pos[0], pos[1]);
-			System.out.printf("Target: %c%c\n", pos[3], pos[4]);
-			tabuleiro.imprime();
+			pos = commands[i].toCharArray();
+			passaAVez = tabuleiro.mover(pos, turno);
+			if (passaAVez) {
+				turno++;
+				System.out.printf("Source: %c%c\n", pos[0], pos[1]);
+				System.out.printf("Target: %c%c\n", pos[3], pos[4]);
+				tabuleiro.imprime();
+			}
 			if (!tabuleiro.temJogo()) {
 				System.out.println("Fim de jogo");
 				break;

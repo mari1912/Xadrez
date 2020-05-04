@@ -98,11 +98,30 @@ public class Tabuleiro {
 		System.out.println("\ta\tb\tc\td\te\tf\tg\th");
 	}
 	
-	public void realizaMovimento (int xInicial, int xFinal, int yInicial, int yFinal) {
+	public boolean realizaMovimento (int xInicial, int xFinal, int yInicial, int yFinal, char type) {
 		boolean p = tabuleiro[xInicial][yInicial].podeMover(xInicial, xFinal, yInicial, yFinal, tabuleiro);
 		if (p) {
-			if (tabuleiro[xInicial][yInicial].tipo == "peao")
-				tabuleiro[xFinal][yFinal] = new Peao ("peao", tabuleiro[xInicial][yInicial].cor);
+			if (tabuleiro[xInicial][yInicial].tipo == "peao") {
+                        	if (xFinal>0&&xFinal<7) {
+                                	tabuleiro[xFinal][yFinal] = new Peao ("peao", tabuleiro[xInicial][yInicial].cor);
+                                }
+                                else {
+                                	switch(type) {
+                                                case 'q':
+                                                	tabuleiro[xFinal][yFinal] = new Rainha ("rainha",tabuleiro[xInicial][yInicial].cor);
+                                                	break;
+                                                case 't':
+                                                	tabuleiro[xFinal][yFinal] = new Torre ("torre", tabuleiro[xInicial][yInicial].cor);
+                                                	break;
+                                                case 'b':
+                                                	tabuleiro[xFinal][yFinal] = new Bispo ("bispo", tabuleiro[xInicial][yInicial].cor);
+                                                	break;
+                                                case 'h':
+                                                	tabuleiro[xFinal][yFinal] = new Cavalo ("cavalo",tabuleiro[xInicial][yInicial].cor);
+                                        		break;
+                                	}
+                        	}
+                        }
 			else if (tabuleiro[xInicial][yInicial].tipo == "bispo")
 				tabuleiro[xFinal][yFinal] = new Bispo ("bispo", tabuleiro[xInicial][yInicial].cor);
 			else if (tabuleiro[xInicial][yInicial].tipo == "cavalo")
@@ -114,14 +133,34 @@ public class Tabuleiro {
 			else if (tabuleiro[xInicial][yInicial].tipo == "rei")
 				tabuleiro[xFinal][yFinal] = new Rei ("rei", tabuleiro[xInicial][yInicial].cor);
 			tabuleiro[xInicial][yInicial] = new Peca ("vazio", '-');
+			return true;
 		}
 		else {
 			p = tabuleiro[xInicial][yInicial].temCaptura(xInicial, xFinal, yInicial, yFinal, tabuleiro);
 			if (p) {
 				if (tabuleiro[xFinal][yFinal].tipo == "rei") //se um rei for eliminado
 					reis--;
-				if (tabuleiro[xInicial][yInicial].tipo == "peao")
-					tabuleiro[xFinal][yFinal] = new Peao ("peao", tabuleiro[xInicial][yInicial].cor);
+				if (tabuleiro[xInicial][yInicial].tipo == "peao") {
+					if (xFinal>0&&xFinal<7) {
+						tabuleiro[xFinal][yFinal] = new Peao ("peao", tabuleiro[xInicial][yInicial].cor);
+					}
+					else {
+						switch(type) {
+							case 'q':
+								tabuleiro[xFinal][yFinal] = new Rainha ("rainha",tabuleiro[xInicial][yInicial].cor);
+								break;
+							case 't': 
+								tabuleiro[xFinal][yFinal] = new Torre ("torre", tabuleiro[xInicial][yInicial].cor);
+								break;
+							case 'b':
+								tabuleiro[xFinal][yFinal] = new Bispo ("bispo", tabuleiro[xInicial][yInicial].cor);
+								break;
+							case 'h':
+								tabuleiro[xFinal][yFinal] = new Cavalo ("cavalo",tabuleiro[xInicial][yInicial].cor);
+								break;
+						}
+					}
+				}
 				else if (tabuleiro[xInicial][yInicial].tipo == "bispo")
 					tabuleiro[xFinal][yFinal] = new Bispo ("bispo", tabuleiro[xInicial][yInicial].cor);
 				else if (tabuleiro[xInicial][yInicial].tipo == "cavalo")
@@ -133,7 +172,9 @@ public class Tabuleiro {
 				else if (tabuleiro[xInicial][yInicial].tipo == "rei")
 					tabuleiro[xFinal][yFinal] = new Rei ("rei", tabuleiro[xInicial][yInicial].cor);
 				tabuleiro[xInicial][yInicial] = new Peca ("vazio", '-');
+				return true;
 			}
+			return false;
 		}
 	}
 	
@@ -144,11 +185,25 @@ public class Tabuleiro {
 			return false;
 	}
 	
-	public void mover (char[] pos) {
-		int xInicial = pos[0] - '1';
-		int yInicial = pos[1] - 'a';
-		int xFinal = pos[3] - '1';
-		int yFinal = pos[4] - 'a';
-		realizaMovimento(xInicial,  xFinal,  yInicial, yFinal);
+	public boolean mover (char[] pos, int turno) {
+		int xInicial = pos[1] - '1';
+		int yInicial = pos[0] - 'a';
+		int xFinal = pos[4] - '1';
+		int yFinal = pos[3] - 'a';
+		if (turno%2==0 && tabuleiro[xInicial][yInicial].cor == 'b') {
+			// vez das pretas e o movimento indicado foi de uma peca branca
+			return false;
+		}
+		if (turno%2==1 && tabuleiro[xInicial][yInicial].cor == 'p') {
+			// vez das brancas e o movimento indicado foi de uma peca preta
+			return false;
+		}
+		if (pos.length==7) {
+			char type = pos[6];
+			return realizaMovimento(xInicial, xFinal, yInicial, yFinal, type);
+		}
+		else {
+			return realizaMovimento(xInicial,  xFinal,  yInicial, yFinal, '0');
+		}
 	}
 }
