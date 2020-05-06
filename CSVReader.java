@@ -5,6 +5,7 @@ import java.io.IOException;
 public class CSVReader {
 		private String dataSource;
 		private String[] commands;
+		private Command[] movements;
   
   		public CSVReader() {
    		 	this.commands = null;
@@ -21,11 +22,22 @@ public class CSVReader {
       			commands = null;
     		} else
       			readCSV();
+			movements = new Command[commands.length];
+			for (int i=0;i<commands.length;i++){
+				if (commands[i].length()==5) {
+                                        movements[i] = new Mover("0");
+					movements[i].setCommand(commands[i]);
+                                }
+                                else {
+                                        movements[i] = new Transformar("0");
+					movements[i].setCommand(commands[i]);
+                                }
+			}
   		}
 
   
- 		 public String[] requestCommands() {
-    			return commands;
+ 		 public Command[] requestCommands() {
+    			return movements;
  		 }
   
   		private void readCSV() {

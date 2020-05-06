@@ -11,11 +11,10 @@ public class Main {
 		//array com os caracteres indicando a posicao das pecas que serao movidas
 		char[] pos = new char[10];
 
-		//Le o arquivo "arq001.csv"
+		//Le o arquivo "arq002.csv"
 		CSVReader csv = new CSVReader();
-		csv.setDataSource("arq001.csv");
-		String commands[] = csv.requestCommands();
-		
+		csv.setDataSource("arq002.csv");
+		Command commands[] = csv.requestCommands();
 
 		//Cria o tabuleiro;
 		Tabuleiro tabuleiro = new Tabuleiro();
@@ -25,17 +24,26 @@ public class Main {
 		
 		//Fazer os movimentos
 		for (int i=0;i<commands.length;i++) {
-			pos = commands[i].toCharArray();
-			passaAVez = tabuleiro.mover(pos, turno);
-			if (passaAVez) {
-				turno++;
-				System.out.printf("Source: %c%c\n", pos[0], pos[1]);
-				System.out.printf("Target: %c%c\n", pos[3], pos[4]);
-				tabuleiro.imprime();
-			}
-			if (!tabuleiro.temJogo()) {
-				System.out.println("Fim de jogo");
-				break;
+			if (commands[i] instanceof Mover) {
+				pos = commands[i].getCommand().toCharArray();
+				passaAVez = tabuleiro.mover(pos, turno);
+				if (passaAVez) {
+					turno++;
+					if (i<commands.length-1 && commands[i+1] instanceof Transformar) {
+						int xTransforma = commands[i].getCommand().charAt(4) - '1';
+                                		int yTransforma = commands[i].getCommand().charAt(3) - 'a';
+                                		char type = commands[i+1].getCommand().charAt(0);
+                                		tabuleiro.transformar(xTransforma,yTransforma,type);
+						i++;
+					}
+					System.out.printf("Source: %c%c\n", pos[0], pos[1]);
+					System.out.printf("Target: %c%c\n", pos[3], pos[4]);
+					tabuleiro.imprime();
+				}
+				if (!tabuleiro.temJogo()) {
+					System.out.println("Fim de jogo");
+					break;
+				}
 			}
 		}
 	}
